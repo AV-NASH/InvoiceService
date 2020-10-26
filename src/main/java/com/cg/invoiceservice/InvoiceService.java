@@ -10,4 +10,11 @@ public class InvoiceService {
         else return fare;
     }
 
+    public double calcTotalFare(Ride[] rides) {
+        double totalfare=0;
+        for(Ride ride:rides){
+            totalfare=totalfare+calcFare(ride.getDistance(),ride.getTime());
+        }
+        return totalfare;
+    }
 }
