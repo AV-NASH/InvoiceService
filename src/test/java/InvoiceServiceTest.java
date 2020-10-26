@@ -50,4 +50,34 @@ public class InvoiceServiceTest {
                 ", average fare=56.25",invoiceService.enhancedInvoice());
 
     }
+
+    @Test
+    public void whenGivenUserIDReturnInvoiceOfTheUser() {
+        InvoiceService invoiceService=new InvoiceService();
+        Ride[] rides1= { new Ride(3.0,10),
+                new Ride(10.0,1),
+                new Ride(5.0,10),
+                new Ride(2.0,4)
+        };
+        Ride[] rides2= { new Ride(4.0,8),
+                new Ride(20.0,3),
+                new Ride(12.0,12),
+                new Ride(2.0,2)
+        };
+        Ride[] rides3= { new Ride(6.0,10),
+                new Ride(10.0,8),
+                new Ride(3.0,10),
+                new Ride(3.0,2)
+        };
+
+        invoiceService.addToInvoiceDataBase("tm101",rides1);
+        invoiceService.addToInvoiceDataBase("tm102",rides2);
+        invoiceService.addToInvoiceDataBase("tm103",rides3);
+
+        invoiceService.generateInvoice("tm101");
+        Assert.assertEquals("Invoice\n" +
+                "total fare=225.0"+
+                ", total rides=4"+
+                ", average fare=56.25",invoiceService.enhancedInvoice());
+    }
 }

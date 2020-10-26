@@ -1,8 +1,11 @@
 package com.cg.invoiceservice;
 
+import java.util.TreeMap;
+
 public class InvoiceService {
     private final double COST_PER_KM=10;
     private final int COST_PER_MINUTE=1;
+    private TreeMap<String,Ride[]> invoiceDatabase=new TreeMap<String,Ride[]>();
     private double totalfare=0;
     private int totalrides;
     private double averagefare;
@@ -17,7 +20,6 @@ public class InvoiceService {
     }
 
     public double calculateTotalFare(Ride[] rides) {
-        calculateTotalRide(rides);
         for(Ride ride:rides){
             totalfare=totalfare+calcFare(ride.getDistance(),ride.getTime());
         }
@@ -26,6 +28,15 @@ public class InvoiceService {
     }
     public void calculateAverageFare(){
         averagefare=totalfare/totalrides;
+    }
+    public void addToInvoiceDataBase(String userID,Ride[] rides){
+        invoiceDatabase.put(userID,rides);
+    }
+
+    public void generateInvoice(String userID){
+        calculateTotalRide(invoiceDatabase.get(userID));
+        calculateTotalFare(invoiceDatabase.get(userID));
+        calculateAverageFare();
     }
 
 
