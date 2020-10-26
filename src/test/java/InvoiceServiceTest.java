@@ -30,8 +30,24 @@ public class InvoiceServiceTest {
                        new Ride(5.0,10),
                        new Ride(2.0,4)
                         };
-       double totalfare=invoiceService.calcTotalFare(rides);
+       double totalfare=invoiceService.calculateTotalFare(rides);
         Assert.assertEquals(225,totalfare,0);
+
+    }
+
+    @Test
+    public void givenMultipleRidesReturnEnhancedInvoice() {
+        InvoiceService invoiceService=new InvoiceService();
+        Ride[] rides= { new Ride(3.0,10),
+                new Ride(10.0,1),
+                new Ride(5.0,10),
+                new Ride(2.0,4)
+        };
+        invoiceService.calculateTotalFare(rides);
+        Assert.assertEquals("Invoice\n" +
+                "total fare=225.0"+
+                ", total rides=4"+
+                ", average fare=56.25",invoiceService.enhancedInvoice());
 
     }
 }
