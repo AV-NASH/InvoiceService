@@ -3,16 +3,24 @@ package com.cg.invoiceservice;
 import java.util.TreeMap;
 
 public class InvoiceService {
-    private final double COST_PER_KM=10;
-    private final int COST_PER_MINUTE=1;
+    private final double NORMAL_COST_PER_KM=10;
+    private final int NORMAL_COST_PER_MINUTE=1;
+    private final double PREMIUM_COST_PER_KM=15;
+    private final int PREMIUM_COST_PER_MINUTE=2;
     private TreeMap<String,Ride[]> invoiceDatabase=new TreeMap<String,Ride[]>();
     private double totalfare=0;
     private int totalrides;
     private double averagefare;
 
-    public double calcFare(double distance, int timeInMinute) {
-        double fare=distance*COST_PER_KM+timeInMinute*COST_PER_MINUTE;
+    public double calcNormalFare(double distance, int timeInMinute) {
+        double fare=distance*NORMAL_COST_PER_KM+timeInMinute*NORMAL_COST_PER_MINUTE;
         if(fare<5) return 5;
+        else return fare;
+    }
+
+    public double calcPremiumFare(double distance, int timeInMinute) {
+        double fare=distance*PREMIUM_COST_PER_KM+timeInMinute*PREMIUM_COST_PER_MINUTE;
+        if(fare<20) return 20;
         else return fare;
     }
     public void calculateTotalRide(Ride[] rides){
@@ -21,9 +29,11 @@ public class InvoiceService {
 
     public double calculateTotalFare(Ride[] rides) {
         for(Ride ride:rides){
-            totalfare=totalfare+calcFare(ride.getDistance(),ride.getTime());
+            if(ride.getType().toLowerCase().equals("premium"))
+                totalfare=totalfare+calcPremiumFare(ride.getDistance(),ride.getTime());
+            else
+            totalfare=totalfare+calcNormalFare(ride.getDistance(),ride.getTime());
         }
-        calculateAverageFare();
         return totalfare;
     }
     public void calculateAverageFare(){
